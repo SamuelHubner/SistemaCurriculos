@@ -1,0 +1,50 @@
+networks:
+  shared-network:
+
+services:
+  postgres:
+    image: postgres:16.2-alpine3.19
+    restart: always
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=microndev
+      - POSTGRES_PASSWORD=microndb123
+      - POSTGRES_DB=micron_dev
+      - POSTGRES_PORT=5432
+    ports:
+      - 5432:5432
+    networks:
+      - shared-network
+    volumes:
+      - ./postgres-db:/var/lib/postgresql/data
+
+
+  backend:
+    container_name: backend
+    restart: unless-stopped
+    image: backend-dev:1.0.0
+    build:
+      context: back_end
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - shared-network
+    depends_on:
+      - postgres
+
+  frontend:
+    container_name: vite_react
+    restart: unless-stopped
+    image: vite_react-dev:1.0.0
+    build:
+      context: front_end/vite_react
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - shared-network
+    depends_on:
+      - backend
