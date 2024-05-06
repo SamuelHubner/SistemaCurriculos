@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Scroll } from 'lucide-react';
 
 const navigation = [

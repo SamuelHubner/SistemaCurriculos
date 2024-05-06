@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
     image: backend-dev:1.0.0
     build:
-      context: back_end
+      context: backend
       target: dev
       dockerfile: Dockerfile
     ports:
@@ -40,7 +40,7 @@ services:
     restart: unless-stopped
     image: vite_react-dev:1.0.0
     build:
-      context: front_end/vite_react
+      context: frontend
       target: dev
       dockerfile: Dockerfile
     ports:
